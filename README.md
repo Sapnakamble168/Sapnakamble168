@@ -20,13 +20,16 @@ This project demonstrates the implementation of GitOps using ArgoCD for managing
 
 ## Step-by-Step Installation
 
-### 1. Install ArgoCD in Kubernetes
+### 1. Install minikube
+  https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Farm64%2Fstable%2Fbinary+download
+
+### 2. Install ArgoCD in Kubernetes
 ```sh
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
-### 2. Verify ArgoCD Installation
+### 3. Verify ArgoCD Installation
 ```sh
 kubectl get pods -n argocd
 ```
@@ -39,7 +42,7 @@ argocd-dex-server-xxxxx                     1/1     Running   0          2m
 argocd-redis-xxxxx                          1/1     Running   0          2m
 ```
 
-### 3. Expose ArgoCD Server (Port-forwarding or Ingress)
+### 4. Expose ArgoCD Server (Port-forwarding or Ingress)
 #### Option 1: Port Forwarding (Local Access)
 ```sh
 kubectl port-forward svc/argocd-server -n argocd 8080:443
@@ -54,24 +57,24 @@ Apply an ingress resource pointing to the ArgoCD service.
 
 ---
 
-### 4. Retrieve Initial Admin Password
+### 5. Retrieve Initial Admin Password
 ```sh
 kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
 Use this password to log in to the UI or CLI.
 
-### 5. Login to ArgoCD via CLI
+### 6. Login to ArgoCD via CLI
 ```sh
 argocd login <ARGOCD-SERVER> --username admin --password <retrieved-password>
 ```
 
-### 6. Register a Git Repository with ArgoCD
+### 7. Register a Git Repository with ArgoCD
 ```sh
 argocd repo add <your-git-repo-url>
 ```
 Ensure your repository contains Kubernetes manifests or Helm charts.
 
-### 7. Deploy an Application with ArgoCD
+### 8. Deploy an Application with ArgoCD
 ```sh
 argocd app create my-app \
     --repo <your-git-repo-url> \
@@ -80,7 +83,7 @@ argocd app create my-app \
     --dest-namespace default
 ```
 
-### 8. Sync and Monitor Application
+### 9. Sync and Monitor Application
 ```sh
 argocd app sync my-app
 argocd app get my-app
