@@ -108,29 +108,13 @@ argocd app set my-app --sync-policy automated --auto-prune --self-heal
 ## Running the Application
 Once deployed, retrieve the service information:
 ```sh
-kubectl get svc -n default
+kubectl get svc -n ArgoaCD
 ```
 If using port-forwarding:
 ```sh
-kubectl port-forward svc/my-app-service 8080:80 -n default
+kubectl port-forward svc/my-node-service 9000:80 -n argocd
 ```
-Now, open `http://localhost:8080` in your browser.
-
----
-
-## Folder Structure
-```
-📦kubernetes-gitops
- ┣ 📂manifests
- ┃ ┣ 📜deployment.yaml
- ┃ ┣ 📜service.yaml
- ┃ ┗ 📜ingress.yaml
- ┣ 📂helm-chart
- ┃ ┣ 📜Chart.yaml
- ┃ ┗ 📜values.yaml
- ┗ 📜README.md
-```
-
+Now, open `http://localhost:9000` in your browser.
 ---
 
 ## Best Practices
@@ -160,20 +144,6 @@ argocd app sync my-app --force
 ```sh
 argocd app history my-app
 argocd app diff my-app
-```
-
----
-
-## Scaling ArgoCD for Production
-### Enable High Availability Mode
-Deploy ArgoCD with HA mode for large-scale production environments:
-```sh
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/ha/install.yaml
-```
-
-### Monitor ArgoCD with Prometheus & Grafana
-```sh
-kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/metrics.yaml
 ```
 
 ---
